@@ -62,9 +62,9 @@ def agregar_empleado(empleado, archivo='src/data/empleados.txt'):
         # Agregar al archivo
         with open(archivo, 'a', encoding='utf-8') as f:
             f.write(empleado.to_string() + '\n')
-        print(f"✓ Empleado '{empleado.nombre}' registrado exitosamente")
+        print(f"Empleado '{empleado.nombre}' registrado exitosamente")
     except Exception as e:
-        print(f"✗ Error al guardar empleado: {e}")
+        print(f"Error al guardar empleado: {e}")
 
 
 def cargar_empleados(archivo='src/data/empleados.txt'):
@@ -80,7 +80,7 @@ def cargar_empleados(archivo='src/data/empleados.txt'):
     empleados = []
     try:
         if not os.path.exists(archivo):
-            print(f"⚠ El archivo {archivo} no existe. Se creará al agregar empleados.")
+            print(f"El archivo {archivo} no existe. Se creará al agregar empleados.")
             return empleados
         
         with open(archivo, 'r', encoding='utf-8') as f:
@@ -90,7 +90,7 @@ def cargar_empleados(archivo='src/data/empleados.txt'):
                     if emp:
                         empleados.append(emp)
     except Exception as e:
-        print(f"✗ Error al cargar empleados: {e}")
+        print(f"Error al cargar empleados: {e}")
     
     return empleados
 
@@ -100,7 +100,7 @@ def listar_empleados():
     empleados = cargar_empleados()
     
     if not empleados:
-        print("\n⚠ No hay empleados registrados")
+        print("No hay empleados registrados")
         return
     
     print("\n" + "="*60)
@@ -157,11 +157,11 @@ def registrar_empleado_interactivo():
         while True:
             id_emp = input("ID del empleado: ").strip()
             if not id_emp.isdigit():
-                print("✗ El ID debe ser un número entero")
+                print("El ID debe ser un número entero")
                 continue
             id_emp = int(id_emp)
             if not validar_id_unico(id_emp):
-                print("✗ Este ID ya existe. Ingrese otro.")
+                print("Este ID ya existe. Ingrese otro.")
                 continue
             break
         
@@ -169,7 +169,7 @@ def registrar_empleado_interactivo():
         while True:
             nombre = input("Nombre completo: ").strip()
             if len(nombre) < 3:
-                print("✗ El nombre debe tener al menos 3 caracteres")
+                print("El nombre debe tener al menos 3 caracteres")
                 continue
             break
         
@@ -189,7 +189,7 @@ def registrar_empleado_interactivo():
                 area = area_op
                 break
             else:
-                print("✗ Debe ingresar un área válida")
+                print("Debe ingresar un área válida")
         
         # Solicitar cargo
         cargo = input("Cargo: ").strip()
@@ -201,9 +201,9 @@ def registrar_empleado_interactivo():
         agregar_empleado(nuevo_empleado)
         
     except KeyboardInterrupt:
-        print("\n\n✗ Registro cancelado por el usuario")
+        print("Registro cancelado por el usuario")
     except Exception as e:
-        print(f"\n✗ Error inesperado: {e}")
+        print(f"Error inesperado: {e}")
 
 
 # Prueba del módulo (solo se ejecuta si se corre este archivo directamente)
