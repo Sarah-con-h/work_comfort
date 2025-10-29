@@ -12,7 +12,7 @@ class Actividad:
         
         Args:
             id_actividad (int): Identificador único de la actividad
-            nombre (str): Nombre de la actividadCrear
+            nombre (str): Nombre de la actividad
             fecha (str): Fecha en formato YYYY-MM-DD
             tipo (str): Tipo de actividad (Pausa activa, Taller, etc.)
             descripcion (str): Descripción opcional de la actividad
@@ -22,11 +22,11 @@ class Actividad:
         self.fecha = fecha
         self.tipo = tipo
         self.descripcion = descripcion
+    
     def to_string(self):
         """Convierte la actividad a formato de texto para guardar"""
         return f"{self.id_actividad}|{self.nombre}|{self.fecha}|{self.tipo}|{self.descripcion}"
     
-  
     @staticmethod
     def from_string(linea):
         """
@@ -54,7 +54,9 @@ class Actividad:
             print(f"Error al leer actividad: {e}")
             return None
     
-    
+    def _str_(self):
+        """Representación en string de la actividad"""
+        return f"[{self.id_actividad}] {self.nombre} ({self.tipo}) - {self.fecha}"
 
 
 def validar_fecha(fecha_str):
@@ -139,7 +141,8 @@ def listar_actividades():
             print(f"    → {act.descripcion}")
     print("="*70)
     print(f"Total de actividades: {len(actividades)}")
-  
+
+
 def obtener_actividad_por_id(id_actividad):
     """
     Busca una actividad por su ID
@@ -172,6 +175,8 @@ def validar_id_unico(id_actividad):
         if act.id_actividad == id_actividad:
             return False
     return True
+
+
 def registrar_actividad_interactiva():
     """Función interactiva para registrar una actividad desde consola"""
     print("\n" + "="*70)
@@ -245,98 +250,6 @@ def registrar_actividad_interactiva():
         print(f"\n✗ Error inesperado: {e}")
 
 
-
-def obtener_actividades_por_fecha(fecha_inicio, fecha_fin=None):
-    """
-    Obtiene actividades dentro de un rango de fechas
-
-    Args:
-        fecha_inicio (str): Fecha inicial en formato YYYY-MM-DD
-        fecha_fin (str): Fecha final en formato YYYY-MM-DD (opcional)
-
-    Returns:
-        list: Lista de actividades en el rango
-    """
-    actividades = cargar_actividades()
-    resultado = []
-
-    try:
-        fecha_ini = datetime.strptime(fecha_inicio, '%Y-%m-%d')
-        fecha_f = datetime.strptime(fecha_fin, '%Y-%m-%d') if fecha_fin else fecha_ini
-
-        for act in actividades:
-            fecha_act = datetime.strptime(act.fecha, '%Y-%m-%d')
-            if fecha_ini <= fecha_act <= fecha_f:
-                resultado.append(act)
-    except ValueError:
-        print("✗ Error en el formato de fechas")
-
-    return resultado
-   
-
-
-def obtener_actividades_por_tipo(tipo):
-    """
-    Obtiene actividades de un tipo específico
-
-    Args:
-        tipo (str): Tipo de actividad a buscar
-
-    Returns:
-        list: Lista de actividades del tipo especificado
-    """
-    actividades = cargar_actividades()
-    return [act for act in actividades if act.tipo.lower() == tipo.lower()]
-
-
-# Prueba del módulo (solo se ejecuta si se corre este archivo directamente)
-if __name__ == "__main__":
-    print("=== PRUEBA DEL MÓDULO ACTIVIDAD ===\n")
-
-    # Crear actividades de prueba
-    act1 = Actividad(1, "Pausa activa matutina", "2025-10-15", "Pausa activa",
-                     "Ejercicios de estiramiento y relajación")
-    act2 = Actividad(2, "Taller de meditación", "2025-10-20", "Taller",
-                     "Técnicas de mindfulness para reducir estrés")
-    act3 = Actividad(3, "Jornada deportiva", "2025-10-25", "Jornada deportiva",
-                     "Torneo de fútbol y voleibol")
-    
-    
-
-
-    # Buscar por tipo
-    print("\n--- Actividades tipo 'Taller' ---")
-    talleres = obtener_actividades_por_tipo("Taller")
-    for taller in talleres:
-        print(f"  - {taller}")
-
-
-
-
-
-
-def validar_id_unico(id_actividad):
-    """
-    Verifica que el ID de la actividad no exista
-    
-    Args:
-        id_actividad (int): ID a verificar
-        
-    Returns:
-        bool: True si el ID es único, False si ya existe
-    """
-    actividades = cargar_actividades()
-    for act in actividades:
-        if act.id_actividad == id_actividad:
-            return False
-    return True
-
-
-
-    
-  
-
-
 def obtener_actividades_por_fecha(fecha_inicio, fecha_fin=None):
     """
     Obtiene actividades dentro de un rango de fechas
@@ -380,7 +293,7 @@ def obtener_actividades_por_tipo(tipo):
 
 
 # Prueba del módulo (solo se ejecuta si se corre este archivo directamente)
-if __name__ == "__main__":
+if __name__== "_main_":
     print("=== PRUEBA DEL MÓDULO ACTIVIDAD ===\n")
     
     # Crear actividades de prueba
@@ -391,9 +304,19 @@ if __name__ == "__main__":
     act3 = Actividad(3, "Jornada deportiva", "2025-10-25", "Jornada deportiva", 
                      "Torneo de fútbol y voleibol")
     
-   
+    # Guardar actividades
+    agregar_actividad(act1)
+    agregar_actividad(act2)
+    agregar_actividad(act3)
     
+    # Listar actividades
+    listar_actividades()
     
+    # Buscar actividad
+    print("\n--- Búsqueda de actividad ---")
+    act_encontrada = obtener_actividad_por_id(2)
+    if act_encontrada:
+        print(f"Actividad encontrada: {act_encontrada}")
     
     # Buscar por tipo
     print("\n--- Actividades tipo 'Taller' ---")
@@ -401,4 +324,9 @@ if __name__ == "__main__":
     for taller in talleres:
         print(f"  - {taller}")
     
- 
+    # Registro interactivo
+    print("\n--- Registro interactivo ---")
+    respuesta = input("¿Desea registrar una actividad? (s/n): ")
+    if respuesta.lower() == 's':
+        registrar_actividad_interactiva()
+        listar_actividades()
