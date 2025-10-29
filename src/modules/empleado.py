@@ -234,9 +234,6 @@ if __name__ == "__main__":
     respuesta = input("¿Desea registrar un empleado? (s/n): ")
     if respuesta.lower() == 's':
         registrar_empleado_interactivo()
-<<<<<<< HEAD
-        listar_empleados()
-=======
         listar_empleados()
 
 # **Archivo:** `src/modules/empleado.py`
@@ -245,5 +242,4 @@ if __name__ == "__main__":
 - Clase `Empleado` con atributos: id, nombre, área, cargo
 - Función para agregar empleados
 - Función para listar empleados
-- Guardar/cargar empleados desde archivo"""
->>>>>>> 03b8455 (Responsabilidades del archivo de sarah)
+- Guardar/cargar empleados desde archivo de texto"""
