@@ -174,3 +174,138 @@ def calcular_estadisticas(registros=None, actividad_id=None):
         'satisfaccion_promedio': round(satisfaccion_promedio, 2),
         'calificaciones': calificaciones
     }
+
+def obtener_participantes_actividad(actividad_id, registros=None):
+    """
+    Obtiene los IDs de empleados que participaron en una actividad
+    
+    Args:
+        actividad_id (int): ID de la actividad
+        registros (list): Lista de registros (opcional)
+        
+    Returns:
+        list: Lista de IDs de empleados que asistieron
+    """
+    if registros is None:
+        registros = cargar_registros()
+    
+    participantes = [r.empleado_id for r in registros 
+                    if r.actividad_id == actividad_id and r.asistio]
+    
+    return participantes
+
+
+def obtener_actividades_empleado(empleado_id, registros=None):
+    """
+    Obtiene las actividades en las que participó un empleado
+    
+    Args:
+        empleado_id (int): ID del empleado
+        registros (list): Lista de registros (opcional)
+        
+    Returns:
+        list: Lista de IDs de actividades donde asistió
+    """
+    if registros is None:
+        registros = cargar_registros()
+    
+    actividades = [r.actividad_id for r in registros 
+                  if r.empleado_id == empleado_id and r.asistio]
+    
+    return actividades
+
+
+def mostrar_estadisticas_generales():
+    """Muestra estadísticas generales en consola"""
+    registros = cargar_registros()
+    
+    if not registros:
+        print("\n⚠ No hay registros de participación")
+        return
+    
+    stats = calcular_estadisticas(registros)
+    
+    print("\n" + "="*60)
+    print("  ESTADÍSTICAS GENERALES DE PARTICIPACIÓN")
+    print("="*60)
+    print(f"Total de registros:        {stats['total_registros']}")
+    print(f"Asistencias:               {stats['asistencias']}")
+    print(f"Ausencias:                 {stats['ausencias']}")
+    print(f"Tasa de participación:     {stats['tasa_participacion']}%")
+    print(f"Satisfacción promedio:     {stats['satisfaccion_promedio']}/5")
+    print("="*60)
+
+
+def registrar_participacion_interactiva():
+    """Función interactiva para registrar participación desde consola"""
+    print("\n" + "="*60)
+    print("  REGISTRO DE PARTICIPACIÓN")
+    print("="*60)
+    
+    try:
+        # Solicitar ID del empleado
+        while True:
+            emp_id = input("ID del empleado: ").strip()
+            if not emp_id.isdigit():
+                print("✗ El ID debe ser un número entero")
+                continue
+            emp_id = int(emp_id)
+            break
+        
+        # Solicitar ID de la actividad
+        while True:
+            act_id = input("ID de la actividad: ").strip()
+            if not act_id.isdigit():
+                print("✗ El ID debe ser un número entero")
+                continue
+            act_id = int(act_id)
+            break
+        
+        # Preguntar si asistió
+        while True:
+            asistio_input = input("¿El empleado asistió? (s/n): ").strip().lower()
+            if asistio_input in ['s', 'n']:
+                asistio = asistio_input == 's'
+                break
+            print("✗ Responda 's' para sí o 'n' para no")
+        
+        # Si asistió, solicitar calificación
+        calificacion = 0
+        if asistio:
+            while True:
+                calif_input = input("Calificación de satisfacción (1-5): ").strip()
+                if calif_input.isdigit() and 1 <= int(calif_input) <= 5:
+                    calificacion = int(calif_input)
+                    break
+                print("✗ La calificación debe ser un número entre 1 y 5")
+        
+        # Crear y guardar registro
+        nuevo_registro = Registro(emp_id, act_id, asistio, calificacion)
+        registrar_participacion(nuevo_registro)
+        
+    except KeyboardInterrupt:
+        print("\n\n✗ Registro cancelado por el usuario")
+    except Exception as e:
+        print(f"\n✗ Error inesperado: {e}")
+
+
+# Prueba del módulo (solo se ejecuta si se corre este archivo directamente)
+if __name__ == "__main__":
+    print("=== PRUEBA DEL MÓDULO REGISTRO ===\n")
+    
+    # Crear registros de prueba
+    reg1 = Registro(1, 1, True, 5)
+    reg2 = Registro(1, 2, True, 4)
+    reg3 = Registro(2, 1, True, 5)
+    reg4 = Registro(3, 1, False, 0)
+    reg5 = Registro(2, 2, True, 3)
+    
+    # Guardar registros
+    registrar_participacion(reg1)
+    registrar_participacion(reg2)
+    registrar_participacion(reg3)
+    registrar_participacion(reg4)
+    registrar_participacion(reg5)
+    
+    # Mostrar estadísticas generales
+    mostrar_estadisticas_generales()
