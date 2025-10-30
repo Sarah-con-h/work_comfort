@@ -309,3 +309,22 @@ if __name__ == "__main__":
     
     # Mostrar estadísticas generales
     mostrar_estadisticas_generales()
+
+    # Estadísticas de actividad específica
+    print("\n--- Estadísticas de Actividad 1 ---")
+    stats_act1 = calcular_estadisticas(actividad_id=1)
+    print(f"Asistencias: {stats_act1['asistencias']}")
+    print(f"Tasa de participación: {stats_act1['tasa_participacion']}%")
+    print(f"Satisfacción promedio: {stats_act1['satisfaccion_promedio']}/5")
+    
+    # Participantes de una actividad
+    print("\n--- Participantes de Actividad 1 ---")
+    participantes = obtener_participantes_actividad(1)
+    print(f"IDs de empleados que asistieron: {participantes}")
+    
+    # Registro interactivo
+    print("\n--- Registro interactivo ---")
+    respuesta = input("¿Desea registrar una participación? (s/n): ")
+    if respuesta.lower() == 's':
+        registrar_participacion_interactiva()
+        mostrar_estadisticas_generales()
