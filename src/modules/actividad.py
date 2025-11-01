@@ -6,7 +6,7 @@ from datetime import datetime
 class Actividad:
     """Clase que representa una actividad de bienestar laboral"""
     
-    def _init_(self, id_actividad, nombre, fecha, tipo, descripcion=""):
+    def __init__(self, id_actividad, nombre, fecha, tipo, descripcion=""):
         """
         Constructor de la clase Actividad
         
@@ -54,7 +54,7 @@ class Actividad:
             print(f"Error al leer actividad: {e}")
             return None
     
-    def _str_(self):
+    def __str__(self):
         """Representación en string de la actividad"""
         return f"[{self.id_actividad}] {self.nombre} ({self.tipo}) - {self.fecha}"
 
