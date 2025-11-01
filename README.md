@@ -129,3 +129,30 @@ Al ejecutar por primera vez, el sistema preguntará si deseas cargar **datos de 
 - 12 registros de participación
 
 ---
+
+## Manual de Usuario
+
+### Menú Principal
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           MENÚ PRINCIPAL                            │
+├─────────────────────────────────────────────────────────────────────┤
+│  1. Registrar empleado                                              │
+│  2. Registrar actividad de bienestar                                │
+│  3. Registrar participación en actividad                            │
+├─────────────────────────────────────────────────────────────────────┤
+│  4. Ver lista de empleados                                          │
+│  5. Ver lista de actividades                                        │
+│  6. Ver estadísticas de participación                               │
+├─────────────────────────────────────────────────────────────────────┤
+│  7. Generar reporte general (CSV)                                   │
+│  8. Generar reporte por área (CSV)                                  │
+│  9. Generar reporte detallado (CSV)                                 │
+│ 10. Generar todos los reportes (CSV)                                │
+│ 11. Generar resumen ejecutivo (CSV)                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│  0. Salir del sistema                                               │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
