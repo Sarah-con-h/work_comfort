@@ -218,3 +218,108 @@ def generar_reporte_detallado(empleados, actividades, registros,
     except Exception as e:
         print(f"\n✗ Error al generar reporte detallado: {e}")
         return False
+ # ===============================
+# FUNCIONES DE REPORTES GENERALES
+# ===============================
+
+def generar_todos_los_reportes(empleados, actividades, registros):
+    """
+    Genera todos los reportes disponibles: general, por área y detallado.
+    Sirve para obtener un resumen completo en un solo llamado.
+    """
+    print("\n" + "="*60)
+    print("  GENERANDO TODOS LOS REPORTES")
+    print("="*60)
+    
+    exito_general = generar_reporte_general(empleados, actividades, registros)
+    exito_area = generar_reporte_por_area(empleados, actividades, registros)
+    exito_detallado = generar_reporte_detallado(empleados, actividades, registros)
+    
+    print("\n" + "="*60)
+    total_exitosos = sum([exito_general, exito_area, exito_detallado])
+    print(f"  Reportes generados exitosamente: {total_exitosos}/3")
+    print("="*60)
+
+
+def exportar_csv_generico(datos, columnas, archivo, descripcion="CSV"):
+    """
+    Función genérica para exportar cualquier conjunto de datos a CSV.
+    Reutilizable para reportes nuevos.
+    """
+    try:
+        os.makedirs(os.path.dirname(archivo), exist_ok=True)
+        with open(archivo, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(columnas)
+            writer.writerows(datos)
+        print(f"✓ {descripcion} exportado: {archivo}")
+        return True
+    except Exception as e:
+        print(f"✗ Error al exportar {descripcion}: {e}")
+        return False
+
+
+def generar_resumen_ejecutivo(empleados, actividades, registros,
+                              archivo='src/data/reportes/resumen_ejecutivo.csv'):
+    """
+    Genera un resumen ejecutivo con métricas clave del programa:
+    - Total empleados, actividades y registros
+    - Total asistencias y tasa de participación global
+    - Satisfacción promedio
+    - Empleados activos y porcentaje
+    - Actividad con mayor participación
+    """
+    try:
+        os.makedirs(os.path.dirname(archivo), exist_ok=True)
+        
+        total_empleados = len(empleados)
+        total_actividades = len(actividades)
+        total_registros = len(registros)
+        total_asistencias = sum(1 for r in registros if r.asistio)
+        tasa_participacion = round((total_asistencias / total_registros * 100), 2) if total_registros > 0 else 0
+        calificaciones = [r.calificacion for r in registros if r.asistio and r.calificacion > 0]
+        satisfaccion_global = round(sum(calificaciones) / len(calificaciones), 2) if calificaciones else 0
+        empleados_activos = len(set(r.empleado_id for r in registros if r.asistio))
+        
+        # Actividad con mayor participación
+        actividades_participacion = {actividad.nombre:
+                                     sum(1 for r in registros if r.actividad_id == actividad.id_actividad and r.asistio)
+                                     for actividad in actividades}
+        actividad_top = max(actividades_participacion, key=actividades_participacion.get) if actividades_participacion else "N/A"
+        
+        # Preparar datos del reporte
+        datos_reporte = [
+            ['Métrica', 'Valor'],
+            ['Fecha del reporte', datetime.now().strftime('%Y-%m-%d %H:%M:%S')],
+            ['Total de empleados', total_empleados],
+            ['Total de actividades realizadas', total_actividades],
+            ['Total de registros', total_registros],
+            ['Total de asistencias', total_asistencias],
+            ['Tasa de participación global', f"{tasa_participacion}%"],
+            ['Satisfacción promedio global', f"{satisfaccion_global}/5"],
+            ['Empleados activos', empleados_activos],
+            ['Porcentaje de empleados activos', f"{round((empleados_activos / total_empleados * 100), 2)}%" if total_empleados > 0 else "0%"],
+            ['Actividad con mayor participación', actividad_top]
+        ]
+        
+        with open(archivo, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerows(datos_reporte)
+        
+        print(f"\n✓ Resumen ejecutivo generado: {archivo}")
+        return True
+    except Exception as e:
+        print(f"\n✗ Error al generar resumen ejecutivo: {e}")
+        return False
+
+
+# ===============================
+# BLOQUE DE PRUEBA DEL MÓDULO
+# ===============================
+
+# Este bloque solo se ejecuta si se corre directamente este archivo.
+# Para pruebas completas, se recomienda ejecutar desde main.py con datos cargados.
+if __name__ == "__main__":
+    print("=== PRUEBA DEL MÓDULO REPORTE ===\n")
+    print("Este módulo debe ejecutarse desde main.py con datos cargados.")
+    print("Para pruebas completas, ejecute: python src/main.py")
