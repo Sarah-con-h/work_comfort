@@ -98,3 +98,123 @@ def generar_reporte_por_area(empleados, actividades, registros,
     except Exception as e:
         print(f"\n✗ Error al generar reporte por área: {e}")
         return False
+def generar_reporte_por_area(empleados, actividades, registros,
+                             archivo='src/data/reportes/reporte_por_area.csv'):
+    """
+    Genera un reporte de participación agrupado por área
+    """
+    try:
+        os.makedirs(os.path.dirname(archivo), exist_ok=True)
+        
+        areas_dict = {}
+        
+        for empleado in empleados:
+            area = empleado.area
+            if area not in areas_dict:
+                areas_dict[area] = {'empleados': [], 'participaciones': [], 'calificaciones': []}
+            
+            areas_dict[area]['empleados'].append(empleado.id_empleado)
+            participaciones_emp = [r for r in registros if r.empleado_id == empleado.id_empleado and r.asistio]
+            areas_dict[area]['participaciones'].extend(participaciones_emp)
+            calificaciones_emp = [r.calificacion for r in participaciones_emp if r.calificacion > 0]
+            areas_dict[area]['calificaciones'].extend(calificaciones_emp)
+        
+        datos_reporte = []
+        for area, datos in areas_dict.items():
+            total_empleados = len(datos['empleados'])
+            total_participaciones = len(datos['participaciones'])
+            empleados_activos = len(set(p.empleado_id for p in datos['participaciones']))
+            satisfaccion = round(sum(datos['calificaciones']) / len(datos['calificaciones']), 2) if datos['calificaciones'] else 0
+            promedio_participaciones = round(total_participaciones / total_empleados, 2) if total_empleados > 0 else 0
+            
+            datos_reporte.append([
+                area,
+                total_empleados,
+                empleados_activos,
+                total_participaciones,
+                promedio_participaciones,
+                f"{satisfaccion}/5"
+            ])
+        
+        datos_reporte.sort(key=lambda x: x[3], reverse=True)
+        
+        columnas = [
+            'Area',
+            'Total_Empleados',
+            'Empleados_Activos',
+            'Total_Participaciones',
+            'Promedio_Participaciones_Por_Empleado',
+            'Satisfaccion_Promedio'
+        ]
+        
+        with open(archivo, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(columnas)
+            writer.writerows(datos_reporte)
+        
+        print(f"\n✓ Reporte por área generado exitosamente: {archivo}")
+        return True
+        
+    except Exception as e:
+        print(f"\n✗ Error al generar reporte por área: {e}")
+        return False
+
+
+def generar_reporte_detallado(empleados, actividades, registros,
+                              archivo='src/data/reportes/reporte_detallado.csv'):
+    """
+    Genera un reporte detallado con cada participación individual
+    """
+    try:
+        os.makedirs(os.path.dirname(archivo), exist_ok=True)
+        
+        empleados_dict = {emp.id_empleado: emp for emp in empleados}
+        actividades_dict = {act.id_actividad: act for act in actividades}
+        
+        datos_reporte = []
+        for registro in registros:
+            empleado = empleados_dict.get(registro.empleado_id)
+            actividad = actividades_dict.get(registro.actividad_id)
+            
+            if empleado and actividad:
+                estado = "Asistió" if registro.asistio else "No asistió"
+                calificacion = f"{registro.calificacion}/5" if registro.asistio else "N/A"
+                datos_reporte.append([
+                    registro.empleado_id,
+                    empleado.nombre,
+                    empleado.area,
+                    empleado.cargo,
+                    registro.actividad_id,
+                    actividad.nombre,
+                    actividad.fecha,
+                    actividad.tipo,
+                    estado,
+                    calificacion
+                ])
+        
+        datos_reporte.sort(key=lambda x: (x[6], x[1]))
+        
+        columnas = [
+            'ID_Empleado',
+            'Nombre_Empleado',
+            'Area',
+            'Cargo',
+            'ID_Actividad',
+            'Nombre_Actividad',
+            'Fecha_Actividad',
+            'Tipo_Actividad',
+            'Estado_Asistencia',
+            'Calificacion'
+        ]
+        
+        with open(archivo, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(columnas)
+            writer.writerows(datos_reporte)
+        
+        print(f"\n✓ Reporte detallado generado exitosamente: {archivo}")
+        return True
+        
+    except Exception as e:
+        print(f"\n✗ Error al generar reporte detallado: {e}")
+        return False
