@@ -156,3 +156,65 @@ Al ejecutar por primera vez, el sistema preguntará si deseas cargar **datos de 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+###  Registrar Empleado
+
+Permite registrar a los empleados de la organización.
+
+• Ejemplo: ID=1 — Daniel Luque(Tecnología) — Desarrollador Senior
+
+• Validaciones: ✅ ID único (int), ✅ Nombre ≥ 3 caracteres, ✅ Área obligatoria
+
+---
+
+###  Registrar Actividad
+
+Registra actividades de bienestar (pausas activas, talleres, jornadas).
+
+• Ejemplo: ID=1 — Pausa activa matutina — Fecha: 2025-11-05 — Tipo: Pausa activa
+
+• Validaciones: ✅ ID único, ✅ Fecha formato YYYY‑MM‑DD, ✅ Nombre ≥ 3 caracteres
+
+---
+
+###  Registrar Participación
+
+Registra asistencia y calificación de satisfacción.
+
+• Ejemplo: Empleado=1, Actividad=1, Asistió: s, Calificación: 5
+
+• Validaciones: ✅ Empleado y actividad existen, ✅ Calificación 1–5 (si asistió), ✅ Sin duplicados
+
+---
+
+###  Ver Lista de Empleados
+
+Muestra todos los empleados registrados con su cargo y área, y el total.
+
+---
+
+###  Ver Lista de Actividades
+
+Listado de actividades con fecha, tipo y una breve descripción.
+
+---
+
+###  Ver Estadísticas
+
+Métricas clave: total registros, asistencias, ausencias, tasa de participación (%) y satisfacción promedio (1–5).
+
+---
+
+### Generar reportes CSV
+
+Exporta datos para análisis en Excel (ruta: `src/data/reportes/`).
+
+-  Reporte general: resumen por actividad (asistencias, tasa, satisfacción).
+-  Reporte por área: métricas agrupadas por departamento.
+-  Reporte detallado: cada participación individual.
+-  Generar todos los reportes a la vez.
+-  Resumen ejecutivo: métricas clave en formato ejecutivo.
+
+---
+
+
+
