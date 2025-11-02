@@ -162,7 +162,15 @@ Permite registrar a los empleados de la organización.
 
 • Ejemplo: ID=1 — Daniel Luque(Tecnología) — Desarrollador Senior
 
-• Validaciones: ✅ ID único (int), ✅ Nombre ≥ 3 caracteres, ✅ Área obligatoria
+• Validaciones: 
+
+ ID único (int)
+
+
+ Nombre ≥ 3 caracteres
+
+
+ Área obligatoria
 
 ---
 
@@ -172,7 +180,7 @@ Registra actividades de bienestar (pausas activas, talleres, jornadas).
 
 • Ejemplo: ID=1 — Pausa activa matutina — Fecha: 2025-11-05 — Tipo: Pausa activa
 
-• Validaciones: ✅ ID único, ✅ Fecha formato YYYY‑MM‑DD, ✅ Nombre ≥ 3 caracteres
+• Validaciones:  ID único, Fecha formato YYYY‑MM‑DD,  Nombre ≥ 3 caracteres
 
 ---
 
@@ -182,7 +190,13 @@ Registra asistencia y calificación de satisfacción.
 
 • Ejemplo: Empleado=1, Actividad=1, Asistió: s, Calificación: 5
 
-• Validaciones: ✅ Empleado y actividad existen, ✅ Calificación 1–5 (si asistió), ✅ Sin duplicados
+• Validaciones: 
+Empleado y actividad existen
+
+Calificación 1–5 (si asistió)
+
+
+Sin duplicados
 
 ---
 
@@ -215,6 +229,7 @@ Exporta datos para análisis en Excel (ruta: `src/data/reportes/`).
 -  Resumen ejecutivo: métricas clave en formato ejecutivo.
 
 ---
+
 
 
 
