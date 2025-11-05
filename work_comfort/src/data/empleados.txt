@@ -1,0 +1,8 @@
+1|Ana Martínez|Recursos Humanos|Coordinadora
+2|Carlos Gómez|Tecnología|Desarrollador
+3|Laura Pérez|Ventas|Ejecutiva
+4|Miguel Torres|Marketing|Analista
+5|Sandra Ruiz|Finanzas|Contadora
+2342|Sarah Castro|Tecnología|Coordinador
+234|Sarah|Tecnología|coordinador
+123|Sofia|Recursos Humanos|asistnte
